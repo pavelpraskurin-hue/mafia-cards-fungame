@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#120d0b">
+  <title>Famiglia — A Mafia Card Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Famiglia home">
+      <span class="brand-mark">F</span>
+      <span>FAMIGLIA</span>
+    </a>
+    <button class="rules-link" id="rulesButton" type="button">How to play <span>↗</span></button>
+  </header>
+
+  <main>
+    <section class="hero" id="setupScreen">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> A SOCIAL DEDUCTION GAME</p>
+        <h1>Trust no one.<br><em>Read everyone.</em></h1>
+        <p class="intro">A town sleeps. The Mafia does not. Deal the cards, conceal your role, and find the truth before dawn.</p>
+      </div>
+
+      <div class="setup-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="step-label">GAME SETUP</p>
+            <h2>Build your table</h2>
+          </div>
+            <div class="player-total"><strong id="playerTotal">4</strong><span>PLAYERS</span></div>
+        </div>
+
+        <div class="counter-row">
+          <div class="counter-info">
+            <span class="role-dot civilian"></span>
+            <div><strong>You + bots</strong><small>4–8 total players</small></div>
+          </div>
+          <div class="stepper">
+            <button type="button" data-action="players-down" aria-label="Remove player">−</button>
+            <span id="playerCount">4</span>
+            <button type="button" data-action="players-up" aria-label="Add player">+</button>
+          </div>
+        </div>
+
+        <p class="section-label">SPECIAL ROLES</p>
+        <div class="role-options" id="roleOptions">
+          <div class="role-option locked">
+            <div class="role-symbol mafia-symbol">♠</div>
+              <div class="role-name"><strong>Mafia</strong><small id="mafiaHint">1 recommended</small></div>
+            <div class="stepper small">
+              <button type="button" data-action="mafia-down" aria-label="Remove Mafia">−</button>
+              <span id="mafiaCount">1</span>
+              <button type="button" data-action="mafia-up" aria-label="Add Mafia">+</button>
+            </div>
+          </div>
+          <label class="role-option">
+            <div class="role-symbol detective-symbol">◉</div>
+            <div class="role-name"><strong>Detective</strong><small>Investigates at night</small></div>
+            <input class="toggle-input" id="detectiveToggle" type="checkbox" checked>
+            <span class="toggle" aria-hidden="true"></span>
+          </label>
+          <label class="role-option">
+            <div class="role-symbol doctor-symbol">✚</div>
+            <div class="role-name"><strong>Doctor</strong><small>Saves one player</small></div>
+            <input class="toggle-input" id="doctorToggle" type="checkbox" checked>
+            <span class="toggle" aria-hidden="true"></span>
+          </label>
+        </div>
+
+        <div class="bot-preview">
+          <span><b>Marco</b> Logical</span>
+          <span><b>Sofia</b> Paranoid</span>
+          <span><b>Luca</b> Aggressive</span>
+        </div>
+
+        <button class="primary-button" id="dealButton" type="button">
+          <span>Start solo game</span><span class="button-arrow">→</span>
+        </button>
+        <p class="helper"><span>◆</span> You see one card. Every bot knows only its own.</p>
+      </div>
+    </section>
+
+    <section class="deal-screen hidden" id="dealScreen">
+      <div class="deal-header">
+        <div>
+          <p class="eyebrow"><span></span> SECRET ASSIGNMENT</p>
+          <h2 id="turnTitle">Your secret card</h2>
+          <p id="turnInstruction">The bots already received their own hidden roles.</p>
+        </div>
+        <div class="progress-wrap">
+          <p>PRIVATE</p>
+          <div class="progress-track"><div id="progressBar"></div></div>
+        </div>
+      </div>
+
+      <div class="card-stage">
+        <button class="role-card is-hidden" id="roleCard" type="button" aria-label="Reveal your role">
+          <span class="card-corner top">F<br><small>◆</small></span>
+          <span class="card-back" id="cardBack">
+            <span class="back-ornament">♠</span>
+            <span class="back-title">FAMIGLIA</span>
+            <span class="back-subtitle">Tap to reveal</span>
+          </span>
+          <span class="card-face" id="cardFace">
+            <span class="role-icon" id="roleIcon">♠</span>
+            <span class="role-kicker">YOUR ROLE</span>
+            <strong id="roleTitle">MAFIA</strong>
+            <span class="role-rule"></span>
+            <span class="role-description" id="roleDescription">Wake at night and choose your target.</span>
+          </span>
+          <span class="card-corner bottom">F<br><small>◆</small></span>
+        </button>
+        <p class="tap-hint" id="tapHint">Tap to reveal your random role</p>
+        <button class="primary-button next-button hidden" id="nextButton" type="button">Hide card &amp; begin <span>→</span></button>
+      </div>
+    </section>
+
+    <section class="game-screen hidden" id="gameScreen">
+      <div class="game-topline">
+        <div>
+          <p class="eyebrow"><span></span> <strong id="roundLabel">DAY 1</strong></p>
+          <h2 id="phaseTitle">The town wakes</h2>
+        </div>
+        <button class="identity-chip" id="identityChip" type="button"><span id="identityIcon">◆</span><span><small>YOUR ROLE</small><b id="identityRole">Civilian</b></span></button>
+      </div>
+
+      <div class="game-layout">
+        <aside class="roster-panel">
+          <p class="section-label">TOWN SQUARE</p>
+          <div id="playerRoster"></div>
+          <button class="secondary-button exit-game" id="backSetupButton" type="button">← Leave game</button>
+        </aside>
+
+        <div class="discussion-panel">
+          <div class="phase-banner" id="phaseBanner">
+            <span id="phaseIcon">☀</span>
+            <div><strong id="bannerTitle">Discuss and find the Mafia</strong><small id="bannerText">Write anything. The bots will answer in character.</small></div>
+          </div>
+          <div class="chat-log" id="chatLog" aria-live="polite"></div>
+          <form class="chat-form" id="chatForm">
+            <input id="chatInput" maxlength="180" autocomplete="off" placeholder="Say something to the town…">
+            <button type="submit" aria-label="Send message">↑</button>
+          </form>
+          <div class="vote-panel" id="votePanel">
+            <div><strong>Ready to vote?</strong><small>Choose who should leave the town.</small></div>
+            <button class="vote-button" id="openVoteButton" type="button">Call a vote</button>
+          </div>
+          <div class="vote-choices hidden" id="voteChoices">
+            <p class="section-label">CAST YOUR VOTE</p>
+            <div id="voteButtons"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ready-screen hidden" id="endScreen">
+      <div class="ready-card">
+        <div class="moon" id="endIcon">♠</div>
+        <p class="eyebrow centered"><span></span> GAME OVER <span></span></p>
+        <h2 id="endTitle">The Mafia wins.</h2>
+        <p id="endText"></p>
+        <div class="role-reveal" id="roleReveal"></div>
+        <div class="ready-actions">
+          <button class="primary-button" id="newRoundButton" type="button">Play again <span>↻</span></button>
+          <button class="secondary-button" id="endSetupButton" type="button">Change setup</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop hidden" id="rulesModal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+    <div class="modal">
+      <button class="modal-close" id="closeRules" type="button" aria-label="Close rules">×</button>
+      <p class="step-label">HOUSE RULES</p>
+      <h2 id="rulesTitle">How to play</h2>
+      <ol>
+        <li><strong>Deal.</strong> You receive one random secret card. Each bot privately receives a different card.</li>
+        <li><strong>Night.</strong> If your role has an action, choose a target. Bots make their own hidden decisions.</li>
+        <li><strong>Day.</strong> Type anything in chat. The logical, paranoid, and aggressive bots respond, then everyone votes.</li>
+        <li><strong>Win.</strong> Town wins by eliminating all Mafia. Mafia wins when they equal or outnumber everyone else.</li>
+      </ol>
+      <p class="modal-note">Choose one player as narrator, or let an eliminated player narrate after the first day.</p>
+    </div>
+  </div>
+
+  <footer><span>EST. 1924</span><span>THE CITY NEVER SLEEPS</span><span>NO. 08</span></footer>
+  <script src="script.js"></script>
+</body>
+</html>
