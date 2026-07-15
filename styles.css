@@ -276,6 +276,9 @@ h1 em { color: var(--red-bright); font-weight: 600; }
 .game-layout { display: grid; grid-template-columns: 250px 1fr; border: 1px solid var(--line); background: rgba(22,17,15,.82); min-height: 590px; }
 .roster-panel { padding: 25px 20px; border-right: 1px solid var(--line); }
 .roster-panel .section-label { margin-bottom: 16px; }
+#playerRoster { max-height: 500px; overflow-y: auto; padding-right: 4px; }
+#playerRoster::-webkit-scrollbar { width: 4px; }
+#playerRoster::-webkit-scrollbar-thumb { background: #4c3d36; }
 .roster-player { display: flex; align-items: center; gap: 11px; padding: 12px 4px; border-bottom: 1px solid var(--line); }
 .roster-avatar { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: #1b1512; background: #a99c89; font: 700 13px "Playfair Display", serif; }
 .roster-player.you .roster-avatar { background: var(--red); color: white; }
